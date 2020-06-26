@@ -1,0 +1,21 @@
+<mat-card class="app-card mt-3">
+    <mat-card-content>
+        <mat-form-field class="form-select-width mt-3">
+            <mat-label>Application</mat-label>
+            <mat-select (selectionChange)="onAppSelected($event.value)" [(value)]="application">
+                <mat-option *ngFor="let app of apps | keyvalue" [value]="app.key">{{app.key}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="form-select-width mt-3">
+            <mat-label>Environment</mat-label>
+            <mat-select (selectionChange)="onAppSelected(application)" [(value)]="env">
+                <mat-option *ngFor="let e of envs" [value]="e">{{e}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <ng-content select="[content]"></ng-content>
+
+    </mat-card-content>
+</mat-card>

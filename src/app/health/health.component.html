@@ -1,0 +1,22 @@
+
+<table *ngIf="hosts" mat-table [dataSource]="hosts" class="mat-elevation-z8 mt-3">
+    <ng-container matColumnDef="app">
+        <th mat-header-cell *matHeaderCellDef> Application </th>
+        <td mat-cell *matCellDef="let element"> {{element.App}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="env">
+        <th mat-header-cell *matHeaderCellDef> Environment </th>
+        <td mat-cell *matCellDef="let element"> {{element.Env}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let element"> 
+            <mat-icon>{{power(element.Status)}}</mat-icon>
+         </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

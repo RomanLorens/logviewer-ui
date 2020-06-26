@@ -1,0 +1,19 @@
+<div class="container-fluid app-conteiner pt-3">
+  <ul class="nav nav-tabs position-relative">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="logs" routerLinkActive="active">Grep Logs</a>
+    </li>
+    <li class="nav-item ml-1">
+      <a class="nav-link" routerLink="list-logs" routerLinkActive="active">List Logs</a>
+    </li>
+    <li class="nav-item ml-1">
+      <a class="nav-link" routerLink="tail-logs" routerLinkActive="active">Tail Logs</a>
+    </li>
+    <li class="nav-item ml-1">
+      <a class="nav-link" routerLink="health" routerLinkActive="active">Apps Health</a>
+    </li>
+  </ul>
+
+  <router-outlet></router-outlet>
+
+</div>

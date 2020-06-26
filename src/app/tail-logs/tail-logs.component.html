@@ -1,0 +1,25 @@
+<app-log-config (hostsUpdated)="onHostsUpdated($event)">
+    <div content *ngIf="app">
+        <mat-form-field class="form-select-width mt-3">
+            <mat-label>Host</mat-label>
+            <mat-select [(value)]="host">
+                <mat-option *ngFor="let h of app.hosts" [value]="h.endpoint">{{basename(h.endpoint)}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="form-select-width mt-3">
+            <mat-label>Log</mat-label>
+            <mat-select [(value)]="path">
+                <mat-option *ngFor="let p of paths" [value]="p">{{p}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button (click)="tailLog()" class="search-button mt-3" mat-stroked-button color="primary">Tail Logs</button>
+    
+        <mat-checkbox [(ngModel)]="withWebsocket"  (ngModelChange)="onWebsocketChange()" class="ml-3">Continously</mat-checkbox>
+    
+    </div>
+</app-log-config>
+
+<app-spinner [loading]="loading" loadingInfo="Searching logs..."></app-spinner>
+
+<app-log-result *ngIf="results" [results]="results"></app-log-result>

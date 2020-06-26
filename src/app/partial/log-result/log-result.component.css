@@ -1,0 +1,8 @@
+.right {
+    right: 15px;
+    position: absolute;
+}
+
+:host ::ng-deep .mat-card-header-text {
+    margin: 0 !important;
+}

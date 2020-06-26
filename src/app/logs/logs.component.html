@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="col-md-7">
+        <app-log-config (hostsUpdated)="onHostsUpdated($event)">
+            <div *ngIf="app" content>
+
+                <mat-form-field class="form-select-width mt-3">
+                    <mat-label>Host</mat-label>
+                    <mat-select [(value)]="host" (selectionChange)="onHostChanged($event.value)">
+                        <mat-option value="All">All</mat-option>
+                        <mat-option *ngFor="let h of app.hosts" [value]="h.endpoint">{{basename(h.endpoint)}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="form-select-width mt-3">
+                        <mat-label>Log</mat-label>
+                        <mat-select [(value)]="log">
+                            <mat-option value="All">All</mat-option>
+                            <mat-option *ngFor="let l of logs" [value]="l">{{l}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                <div class="row">
+                    <div class="col-md-10">
+                        <mat-form-field required class="form-select-width mt-3">
+                            <mat-label>Request ID</mat-label>
+                            <input matInput (keydown.enter)="search()" [(ngModel)]="value">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-2 pl-0">
+                        <button (click)="search()" class="search-button" mat-stroked-button
+                            color="primary">Search</button>
+                    </div>
+                </div>
+            </div>
+        </app-log-config>
+    </div>
+
+    <div *ngIf="app" class="col-md-5">
+        <mat-card class="app-card mt-3">
+            <mat-card-content>
+                <mat-card-content>
+                    <ul *ngFor="let h of app.hosts" class="list-group list-group-flush">
+                        <li class="list-group-item">{{basename(h.endpoint)}}</li>
+                        <li *ngFor="let p of h.paths" class="list-group-item">{{p}}</li>
+                    </ul>
+                </mat-card-content>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+
+<app-spinner [loading]="loading" loadingInfo="Searching logs..."></app-spinner>
+
+<app-log-result *ngFor="let res of results" [results]="res"></app-log-result>
