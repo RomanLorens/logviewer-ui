@@ -1,3 +1,13 @@
 table {
-    width: 100%;
-  }
+  width: 100%;
+}
+
+.download-icon {
+  position: relative;
+  top: 8px;
+  cursor: pointer;
+}
+
+.tooltip-red {
+  background: #b71c1c;
+}

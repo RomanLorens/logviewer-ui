@@ -1,0 +1,13 @@
+.results {
+    width: 100%;
+}
+
+.relative {
+    position: relative;
+}
+
+.icon {
+    position: absolute;
+    top: -4px;
+    cursor: pointer;
+}

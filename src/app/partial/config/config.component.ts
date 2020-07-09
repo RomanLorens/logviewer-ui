@@ -9,15 +9,14 @@ import { Application } from 'src/app/logs/Application';
   styleUrls: ['./config.component.css']
 })
 export class ConfigComponent extends UnsubscribeComponent implements OnInit {
-  apps: Map<string, any[]>;
-  application: string;
-  env: string;
+  apps: Map<string, Application[]>;
   envs: string[];
   value = '';
-  hosts: Application[];
   loading = false;
+  application: string;
+  env: string;
 
-  @Output() hostsUpdated = new EventEmitter<any[]>();
+  @Output() hostsUpdated = new EventEmitter<Application>();
 
   constructor(private commonService: CommonService) {
     super();
@@ -32,33 +31,40 @@ export class ConfigComponent extends UnsubscribeComponent implements OnInit {
           a = [];
           m.set(app.application, a);
         }
-        if (!this.application) {
-          this.application = app.application;
-        }
         a.push(app);
       });
       this.apps = m;
 
-      const chosenApp = JSON.parse(window.localStorage.getItem('chosen-application'));
-      if (chosenApp && this.apps.get(chosenApp['app'])) {
-        this.application = chosenApp['app'];
-      } else {
-        this.application = apps[0].application;
+      let chosenApp = null;
+      try {
+        chosenApp = JSON.parse(window.localStorage.getItem('chosen-application'));
+      } catch (err) {
+        console.error(err);
       }
-      this.env = this.apps.get(this.application)[0].env;
-      this.onAppSelected(this.application);
+      if (!chosenApp) {
+        chosenApp = apps[0];
+      } else {
+      }
+      this.application = chosenApp.application;
+      this.onAppSelected(chosenApp.application, chosenApp.env);
     });
-
   }
 
-  onAppSelected(app: string) {
+  onEnvSelected(env: string) {
+    this.env = env;
+    const app = this.apps.get(this.application);
+    const cfg = app.find(e => e.env === env);
+    window.localStorage.setItem('chosen-application', JSON.stringify(cfg));
+    this.hostsUpdated.emit(Object.assign({}, cfg));
+  }
+
+  onAppSelected(app: string, env?: string) {
+    this.application = app;
     this.envs = this.apps.get(app).map(a => a.env);
-    this.hosts = this.apps.get(app).find(a => a.env === this.env);
-    if (!this.hosts) {
-      this.hosts = this.apps.get(app)[0];
+    if (env) {
+      this.onEnvSelected(env);
+    } else {
+      this.onEnvSelected(this.envs[0]);
     }
-    window.localStorage.setItem('chosen-application', JSON.stringify({ app, env: this.env }));
-    this.hostsUpdated.emit(this.hosts);
   }
-
 }

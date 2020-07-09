@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -30,6 +31,8 @@ import { ConfigComponent } from './partial/config/config.component';
 import { TailLogsComponent } from './tail-logs/tail-logs.component';
 import { LogResultComponent } from './partial/log-result/log-result.component';
 import { HealthComponent } from './health/health.component';
+import { StatsComponent } from './stats/stats.component';
+import { StatsErrorComponent } from './stats/stats-error.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +44,8 @@ import { HealthComponent } from './health/health.component';
     TailLogsComponent,
     LogResultComponent,
     HealthComponent,
+    StatsComponent,
+    StatsErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +68,8 @@ import { HealthComponent } from './health/health.component';
     MatButtonModule,
     MatChipsModule,
     MatSnackBarModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatTooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent]

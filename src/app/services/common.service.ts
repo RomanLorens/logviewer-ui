@@ -8,6 +8,7 @@ import { environment } from '../../environments/environment';
 import { SearchResult } from '../logs/search-result';
 import { Log } from '../list-logs/log';
 import { TailLog } from '../tail-logs/tail-log';
+import { TailLogsComponent } from '../tail-logs/tail-logs.component';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,10 @@ export class CommonService {
     return this.http.post<SearchResult>(`/${environment.context}/tail-log`, app);
   }
 
+  stats(app: TailLog) {
+    return this.http.post(`/${environment.context}/stats`, app);
+  }
+
   basename(url: string): string {
     let hostname;
     if (url.indexOf('/') > -1) {
@@ -44,6 +49,10 @@ export class CommonService {
     hostname = hostname.split(':')[0];
     hostname = hostname.split('?')[0];
     return hostname;
+  }
+
+  downloadLog(log: string, host: string) {
+    return this.http.post(`/${environment.context}/download-log`, { log, host }, { responseType: 'blob' });
   }
 
 }

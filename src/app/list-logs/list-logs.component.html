@@ -11,7 +11,14 @@
 <table *ngIf="logs" mat-table [dataSource]="logs" class="mat-elevation-z8 mt-3">
     <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        <td mat-cell *matCellDef="let element">
+            {{basename(element.name)}}
+            <mat-icon class="ml-2 download-icon" matTooltip="Download log file" 
+            matTooltipPosition="right"
+            matTooltipClass="tooltip-red"
+            (click)="download(element.name, element.host)"
+            >get_app</mat-icon>
+        </td>
     </ng-container>
 
     <ng-container matColumnDef="modtime">

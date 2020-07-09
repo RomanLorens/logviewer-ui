@@ -4,6 +4,7 @@ import { Application } from './application'
 import { ApplicationSearch } from './application-search'
 import { SearchResult } from './search-result';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-logs',
@@ -19,21 +20,34 @@ export class LogsComponent implements OnInit {
   host = 'All';
   logs: string[];
   log = 'All';
+  searchFromUrl = false;
 
-  constructor(private commonService: CommonService,
-    private _snackBar: MatSnackBar) {
+  constructor(
+    private commonService: CommonService,
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      if (params.reqid) {
+        this.value = params.reqid;
+        this.searchFromUrl = true;
+      }
+    });
   }
 
-  basename(url: string) {
+  basename(url: string): string {
     return this.commonService.basename(url);
   }
 
-  onHostsUpdated(app) {
+  onHostsUpdated(app): void {
     this.app = app;
     this.logs = app.hosts[0].paths;
+    if (this.searchFromUrl) {
+      this.search();
+      this.searchFromUrl = false;
+    }
   }
 
   onHostChanged(host) {
@@ -57,7 +71,7 @@ export class LogsComponent implements OnInit {
       s.logs = [this.log];
     }
     if (s.value.trim() === '') {
-      this._snackBar.open('There must be specified search value ', 'Error', {
+      this.snackBar.open('There must be specified search value ', 'Error', {
         duration: 2000,
       });
       return;

@@ -34,6 +34,8 @@ export class LogResultComponent implements OnInit {
   line(l): string {
     if (l.includes(('|ERROR|'))) {
       return `<div class="text-danger">${l}</div>`;
+    } else if (l.includes(('|WARNING|'))) {
+      return `<div class="text-warning">${l}</div>`;
     }
     return l;
   }

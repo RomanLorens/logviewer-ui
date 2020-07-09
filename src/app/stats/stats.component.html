@@ -1,0 +1,53 @@
+<app-log-config (hostsUpdated)="onHostsUpdated($event)">
+    <div content *ngIf="app">
+        <mat-form-field class="form-select-width mt-3">
+            <mat-label>Host</mat-label>
+            <mat-select [(value)]="host">
+                <mat-option *ngFor="let h of app.hosts" [value]="h.endpoint">{{basename(h.endpoint)}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="form-select-width mt-3">
+            <mat-label>Log</mat-label>
+            <mat-select [(value)]="log">
+                <mat-option *ngFor="let p of paths" [value]="p">{{p}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button (click)="stats()" class="search-button mt-3" mat-stroked-button color="primary">Stats</button>
+    </div>
+</app-log-config>
+
+
+<table *ngIf="dataSource" mat-table [dataSource]="dataSource" class="mat-elevation-z8 results mt-3">
+    <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef> # </th>
+        <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="user">
+        <th mat-header-cell *matHeaderCellDef> User </th>
+        <td mat-cell *matCellDef="let element"> {{element.user}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastAccess">
+        <th mat-header-cell *matHeaderCellDef> Last Access </th>
+        <td mat-cell *matCellDef="let element"> {{element.lastTime}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="counter">
+        <th mat-header-cell *matHeaderCellDef> Stats </th>
+        <td mat-cell *matCellDef="let element">
+            <div>Total {{element.counter}} </div>
+            <div *ngFor="let l of element.levels | keyvalue">
+                <span class="relative" [ngClass]="{'text-danger': l.key === 'ERROR' , 'text-warning':l.key === 'WARNING'}">{{l.key}}
+                    {{l.value}}
+                    <mat-icon *ngIf="l.key === 'ERROR'" (click)="showErrors(element.errors)" class="ml-2 icon">info</mat-icon>
+                    <mat-icon *ngIf="l.key === 'WARNING'" (click)="showErrors(element.warnings)" class="ml-2 icon">info</mat-icon>
+                </span>
+            </div>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

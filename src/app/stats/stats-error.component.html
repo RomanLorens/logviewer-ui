@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Error IDs</h1>
+<div mat-dialog-content>
+  <mat-list role="list">
+    <mat-list-item *ngFor="let d of data">
+        <span class="mr-2">{{d.date}}</span> <a (click)="close()" [routerLink]="['/logs', d.reqid]">{{d.reqid}}</a>
+    </mat-list-item>
+  </mat-list>
+</div>

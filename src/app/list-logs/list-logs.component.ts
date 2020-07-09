@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../services/common.service';
 import { Log } from './log'
 import { ApplicationSearch } from '../logs/application-search';
+import * as fileSaver from 'file-saver';
 
 @Component({
   selector: 'app-list-logs',
@@ -16,11 +17,16 @@ export class ListLogsComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'modtime', 'size'];
 
-  constructor(private commonService: CommonService) {
+  constructor(
+    private commonService: CommonService) {
   }
 
   ngOnInit(): void {
     this.search = new ApplicationSearch();
+  }
+
+  download(log: string, host: string): void {
+    this.commonService.downloadLog(log, host).subscribe((res: Blob) => fileSaver.saveAs(res, this.basename(log)));
   }
 
   onHostsUpdated(host) {
@@ -34,6 +40,10 @@ export class ListLogsComponent implements OnInit {
       this.logs = d;
       this.loading = false;
     });
+  }
+
+  basename(path): string {
+    return path.replace(/.*\//, '');
   }
 
   formatBytes(bytes, decimals = 2) {
