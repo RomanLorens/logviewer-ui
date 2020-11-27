@@ -1,6 +1,6 @@
 {
     "/iq-logviewer": {
-      "target": "https://localhost:8090",
+      "target": "https://sd-246c-9acf.nam.nsroot.net:8090",
       "secure": false
     }
   }

@@ -1,0 +1,17 @@
+table {
+    width: 100%;
+}
+
+:host ::ng-deep .mat-paginator-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 56px;
+    padding: 0 8px;
+    flex-wrap: wrap-reverse;
+    width: 100%;
+}
+
+.pointer {
+    cursor: pointer;
+}

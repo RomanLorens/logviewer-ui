@@ -1,0 +1,23 @@
+<app-log-config (hostsUpdated)="onHostsUpdated($event)">
+    <div content *ngIf="app">
+        <mat-form-field class="form-select-width mt-3">
+            <mat-label>Host</mat-label>
+            <mat-select [(value)]="host">
+                <mat-option *ngFor="let h of app.hosts" [value]="h.endpoint">{{basename(h.endpoint)}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="!hideLog" class="form-select-width mt-3">
+            <mat-label>Log</mat-label>
+            <mat-select (selectionChange)="onLogSelected($event.value)" [(value)]="log">
+                <mat-option *ngFor="let p of paths" [value]="p">{{p}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+       
+        <ng-content select="[buttons]"></ng-content>
+
+        <mat-checkbox *ngIf="withOlderLogs" [(ngModel)]="olderLogs" (ngModelChange)="loadOlderLogs()" class="ml-3">Older Logs
+        </mat-checkbox>
+    </div>
+</app-log-config>

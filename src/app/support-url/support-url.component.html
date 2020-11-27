@@ -1,0 +1,39 @@
+<app-full-config (application)="onApplication($event)" [hideLog]="true">
+</app-full-config>
+
+<div *ngIf="app" class="mt-2">
+    <div *ngFor="let su of app.supportUrls" class="mt-2">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <span class="invoke-icon mr-3">
+                        <mat-icon (click)="onInvoke(su)">support_agent</mat-icon>
+                    </span>
+                    {{su.name}} {{su.description}}
+                </mat-panel-title>
+                <mat-panel-description>
+                    {{su.url}}
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div *ngIf="su.headers" class="mt-2">
+                <mat-card-subtitle>Headers</mat-card-subtitle>
+                <mat-form-field *ngFor="let h of su.headers | keyvalue;trackBy:trackByFn" class="mt-2 full-width">
+                    <mat-label>{{h.key}}</mat-label>
+                    <input [(ngModel)]="su.headers[h.key]" matInput>
+                </mat-form-field>
+            </div>
+            <div>
+                <button (click)="onInvoke(su)" class="search-button mt-3" mat-stroked-button
+                    color="primary">Invoke</button>
+            </div>
+        </mat-expansion-panel>
+    </div>
+    <span>{{stopPropagation()}}</span>
+</div>
+
+<mat-card *ngIf="result" class="mt-2">
+    <div>
+        <mat-card-subtitle>{{currentUrl}}</mat-card-subtitle>
+        <pre>{{result | json}}</pre>
+    </div>
+</mat-card>

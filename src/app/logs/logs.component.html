@@ -21,7 +21,7 @@
                     </mat-form-field>
 
                 <div class="row">
-                    <div class="col-md-10">
+                    <div class="col-md-8">
                         <mat-form-field required class="form-select-width mt-3">
                             <mat-label>Request ID</mat-label>
                             <input matInput (keydown.enter)="search()" [(ngModel)]="value">
@@ -30,6 +30,10 @@
                     <div class="col-md-2 pl-0">
                         <button (click)="search()" class="search-button" mat-stroked-button
                             color="primary">Search</button>
+                    </div>
+                    <div class="col-md-2">
+                        <mat-checkbox [(ngModel)]="olderLogs" (ngModelChange)="loadOlderLogs()" class="older-logs">Older Logs
+                        </mat-checkbox>
                     </div>
                 </div>
             </div>

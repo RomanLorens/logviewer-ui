@@ -21,6 +21,7 @@ export class LogsComponent implements OnInit {
   logs: string[];
   log = 'All';
   searchFromUrl = false;
+  olderLogs = false;
 
   constructor(
     private commonService: CommonService,
@@ -41,12 +42,28 @@ export class LogsComponent implements OnInit {
     return this.commonService.basename(url);
   }
 
-  onHostsUpdated(app): void {
+  loadOlderLogs() {
+    if (this.olderLogs) {
+      const search = new ApplicationSearch();
+      search.hosts = this.app.hosts.map(h => h.endpoint);
+      search.logs = [].concat(...this.app.hosts.map(h => h.paths));
+      this.commonService.listLogs(search).subscribe(d => {
+        this.logs = d.map(l => l.name);
+      });
+    } else {
+      this.onHostsUpdated(this.app, false);
+    }
+  }
+
+  onHostsUpdated(app, uncheckOldLogs = true): void {
     this.app = app;
     this.logs = app.hosts[0].paths;
     if (this.searchFromUrl) {
       this.search();
       this.searchFromUrl = false;
+    }
+    if (uncheckOldLogs) {
+      this.olderLogs = false;
     }
   }
 

@@ -8,3 +8,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .form-select-width {
     width: 100%;
 }
+
+.full-width {
+    width: 100%;
+}

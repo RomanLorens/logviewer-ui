@@ -33,6 +33,11 @@ import { LogResultComponent } from './partial/log-result/log-result.component';
 import { HealthComponent } from './health/health.component';
 import { StatsComponent } from './stats/stats.component';
 import { StatsErrorComponent } from './stats/stats-error.component';
+import { ErrorComponent } from './error/error.component';
+import { FullConfigComponent } from './partial/full-config/full-config.component';
+import { RequestTesterComponent } from './request-tester/request-tester.component';
+import { SupportUrlComponent } from './support-url/support-url.component';
+import { UserInfoComponent } from './partial/user-info/user-info.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +50,12 @@ import { StatsErrorComponent } from './stats/stats-error.component';
     LogResultComponent,
     HealthComponent,
     StatsComponent,
-    StatsErrorComponent
+    StatsErrorComponent,
+    ErrorComponent,
+    FullConfigComponent,
+    RequestTesterComponent,
+    SupportUrlComponent,
+    UserInfoComponent
   ],
   imports: [
     BrowserModule,

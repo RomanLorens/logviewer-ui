@@ -4,6 +4,7 @@ import { Application } from '../logs/Application';
 import { TailLog } from '../tail-logs/tail-log';
 import { StatsErrorComponent } from './stats-error.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ApplicationSearch } from '../logs/application-search';
 
 @Component({
   selector: 'app-stats',
@@ -18,12 +19,14 @@ export class StatsComponent implements OnInit {
   paths: string[];
   displayedColumns: string[] = ['position', 'user', 'lastAccess', 'counter'];
   dataSource;
+  olderLogs = false;
 
   constructor(
     private commonService: CommonService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.commonService.getUser('rl78794').subscribe()
   }
 
   stats() {
@@ -49,15 +52,32 @@ export class StatsComponent implements OnInit {
     });
   }
 
+  loadOlderLogs() {
+    if (this.olderLogs) {
+      const search = new ApplicationSearch();
+      search.hosts = this.app.hosts.map(h => h.endpoint);
+      search.logs = [].concat(...this.app.hosts.map(h => h.paths));
+      this.commonService.listLogs(search).subscribe(d => {
+        this.paths = d.map(l => l.name);
+      });
+    } else {
+      this.onHostsUpdated(this.app, false);
+    }
+  }
+
   showErrors(errors) {
     this.dialog.open(StatsErrorComponent, {data: errors});
   }
 
-  onHostsUpdated(app) {
+  onHostsUpdated(app, uncheckOlderLogs = true) {
     this.app = app;
     this.host = app.hosts[0].endpoint;
     this.paths = app.hosts[0].paths;
     this.log = this.paths[0];
+    if (uncheckOlderLogs) {
+      this.olderLogs = false;
+    }
+    this.dataSource = null;
   }
 
   basename(u: string): string {

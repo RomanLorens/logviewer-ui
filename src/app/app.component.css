@@ -1,3 +1,11 @@
 .app-conteiner  {
     padding: 20px 50px;
 }
+
+.show {
+    display: block;
+}
+
+.blue {
+    color: #007bff;
+}

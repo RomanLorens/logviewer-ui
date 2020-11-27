@@ -5,6 +5,10 @@ import { ListLogsComponent } from './list-logs/list-logs.component';
 import { TailLogsComponent } from './tail-logs/tail-logs.component';
 import { HealthComponent } from './health/health.component';
 import { StatsComponent } from './stats/stats.component';
+import { ErrorComponent } from './error/error.component';
+import { RequestTesterComponent } from './request-tester/request-tester.component';
+import { SupportUrlComponent } from './support-url/support-url.component';
+import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   { path: 'logs', component: LogsComponent },
@@ -13,6 +17,13 @@ const routes: Routes = [
   { path: 'tail-logs', component: TailLogsComponent },
   { path: 'health', component: HealthComponent },
   { path: 'stats', component: StatsComponent },
+  { path: 'errors', component: ErrorComponent },
+  { path: 'request-tester', component: RequestTesterComponent },
+  { 
+    path: 'support-urls', 
+    component: SupportUrlComponent,
+    canActivate: [AuthGuard]
+  },
   { path: '', pathMatch: 'full', redirectTo: 'logs' },
 ];
 

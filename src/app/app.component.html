@@ -13,7 +13,17 @@
       <a class="nav-link" routerLink="stats" routerLinkActive="active">Stats</a>
     </li>
     <li class="nav-item ml-1">
+      <a class="nav-link" routerLink="errors" routerLinkActive="active">Errors</a>
+    </li>
+    <li class="nav-item ml-1">
       <a class="nav-link" routerLink="health" routerLinkActive="active">Apps Health</a>
+    </li>
+    <li class="nav-item dropdown blue">
+      <a class="nav-link dropdown-toggle " (click)="toggleMenu($event, 'support')" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Support</a>
+      <div class="dropdown-menu" id="support">
+        <a class="nav-link" routerLink="support-urls" routerLinkActive="active">Support URLs</a>
+        <a class="nav-link" routerLink="request-tester" routerLinkActive="active">Request Details</a>
+      </div>
     </li>
   </ul>
 

@@ -5,3 +5,8 @@
 .search-button {
     margin-top: 20px;
 }
+
+.older-logs {
+    position: relative;
+    top: 25px;
+}

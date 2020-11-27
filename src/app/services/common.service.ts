@@ -9,6 +9,8 @@ import { SearchResult } from '../logs/search-result';
 import { Log } from '../list-logs/log';
 import { TailLog } from '../tail-logs/tail-log';
 import { TailLogsComponent } from '../tail-logs/tail-logs.component';
+import { SupportUrl } from '../logs/SupportUrl';
+import { UserInfo } from '../partial/user-info/UserInfo';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +41,10 @@ export class CommonService {
     return this.http.post(`/${environment.context}/stats`, app);
   }
 
+  errors(app: TailLog) {
+    return this.http.post(`/${environment.context}/errors`, app);
+  }
+
   basename(url: string): string {
     let hostname;
     if (url.indexOf('/') > -1) {
@@ -53,6 +59,20 @@ export class CommonService {
 
   downloadLog(log: string, host: string) {
     return this.http.post(`/${environment.context}/download-log`, { log, host }, { responseType: 'blob' });
+  }
+
+  requestTester() {
+    return this.http.get(`/${environment.context}/support/request-details`);
+  }
+
+  invokeSupportUrl(su: SupportUrl) {
+    if (su.method === 'get') {
+      return this.http.get(`/${environment.context}/support/proxy?url=${su.url}`, {headers: su.headers})
+    }
+  }
+
+  getUser(user: string): Observable<UserInfo> {
+    return this.http.get<UserInfo>(`/${environment.context}/user-details?user=${user}`)
   }
 
 }

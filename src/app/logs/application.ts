@@ -1,3 +1,5 @@
+import { SupportUrl } from './SupportUrl';
+
 export interface Application {
     application: string;
     env: string;
@@ -8,4 +10,5 @@ export interface Application {
             health: string;
         }
     ];
+    supportUrls: SupportUrl[]
 }

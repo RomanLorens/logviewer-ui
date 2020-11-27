@@ -7,13 +7,18 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
+
         <mat-form-field class="form-select-width mt-3">
+
             <mat-label>Log</mat-label>
             <mat-select [(value)]="log">
                 <mat-option *ngFor="let p of paths" [value]="p">{{p}}</mat-option>
             </mat-select>
+
         </mat-form-field>
         <button (click)="stats()" class="search-button mt-3" mat-stroked-button color="primary">Stats</button>
+        <mat-checkbox [(ngModel)]="olderLogs" (ngModelChange)="loadOlderLogs()" class="ml-3">Older Logs
+        </mat-checkbox>
     </div>
 </app-log-config>
 
@@ -26,7 +31,7 @@
 
     <ng-container matColumnDef="user">
         <th mat-header-cell *matHeaderCellDef> User </th>
-        <td mat-cell *matCellDef="let element"> {{element.user}} </td>
+        <td mat-cell *matCellDef="let element"> <app-user-info [user]="element.user"></app-user-info>  {{element.user}} </td>
     </ng-container>
 
     <ng-container matColumnDef="lastAccess">
@@ -39,10 +44,13 @@
         <td mat-cell *matCellDef="let element">
             <div>Total {{element.counter}} </div>
             <div *ngFor="let l of element.levels | keyvalue">
-                <span class="relative" [ngClass]="{'text-danger': l.key === 'ERROR' , 'text-warning':l.key === 'WARNING'}">{{l.key}}
+                <span class="relative"
+                    [ngClass]="{'text-danger': l.key === 'ERROR' , 'text-warning':l.key === 'WARNING' || l.key === 'WARN' }">{{l.key}}
                     {{l.value}}
-                    <mat-icon *ngIf="l.key === 'ERROR'" (click)="showErrors(element.errors)" class="ml-2 icon">info</mat-icon>
-                    <mat-icon *ngIf="l.key === 'WARNING'" (click)="showErrors(element.warnings)" class="ml-2 icon">info</mat-icon>
+                    <mat-icon *ngIf="l.key === 'ERROR'" (click)="showErrors(element.errors)" class="ml-2 icon">info
+                    </mat-icon>
+                    <mat-icon *ngIf="l.key === 'WARNING' || l.key === 'WARN'" (click)="showErrors(element.warnings)" class="ml-2 icon">info
+                    </mat-icon>
                 </span>
             </div>
         </td>
