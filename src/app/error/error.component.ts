@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonService } from '../services/common.service';
-import { TailLog } from '../tail-logs/tail-log';
+import { ApplicationLogRequest } from '../model/application-log-request';
 import { ErrorDetails } from './error-details';
 import { MatPaginator } from '@angular/material/paginator';
 import { ErrorDataSource } from './error-datasource';
 import { tap } from 'rxjs/operators';
+import { StatsRequest } from '../model/stats-request';
 
 @Component({
   selector: 'app-error',
@@ -13,7 +14,7 @@ import { tap } from 'rxjs/operators';
 })
 export class ErrorComponent implements OnInit {
 
-  log: TailLog;
+  errorReq: StatsRequest = {} as StatsRequest
   displayedColumns: string[] = ['id', 'user', 'message', 'date'];
   results: ErrorDetails[];
   pagination = {
@@ -33,9 +34,9 @@ export class ErrorComponent implements OnInit {
   }
 
   errors() {
-    this.log.from = this.paginator.pageIndex
-    this.log.size = this.paginator.pageSize
-    this.dataSource.fetch(this.log)
+    this.errorReq.from = this.paginator.pageIndex
+    this.errorReq.size = this.paginator.pageSize
+    this.dataSource.fetch(this.errorReq)
   }
 
   ngAfterViewInit() {
@@ -46,8 +47,10 @@ export class ErrorComponent implements OnInit {
       .subscribe();
   }
 
-  onApplication(log) {
-    this.log = log
+  onApplication(log: ApplicationLogRequest) {
+    this.errorReq.logStructure = log.logStructure
+    this.errorReq.endpoint = log.endpoint
+    this.errorReq.log = log.log
     this.paginator.pageIndex = 0
     this.paginator.pageSize = 0
   }

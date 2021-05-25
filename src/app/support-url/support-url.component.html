@@ -1,13 +1,13 @@
-<app-full-config (application)="onApplication($event)" [hideLog]="true">
+<app-full-config (application)="onApplication($event)" (supportURLs)="onSupportURLs($event)" [hideLog]="true">
 </app-full-config>
 
 <div *ngIf="app" class="mt-2">
-    <div *ngFor="let su of app.supportUrls" class="mt-2">
+    <div *ngFor="let su of appSupportUrl.supportUrls" class="mt-2">
         <mat-expansion-panel>
             <mat-expansion-panel-header>
-                <mat-panel-title>
+                <mat-panel-title class="name-description">
                     <span class="invoke-icon mr-3">
-                        <mat-icon (click)="onInvoke(su)">support_agent</mat-icon>
+                        <mat-icon (click)="onInvoke(su, appSupportUrl.appHost)">support_agent</mat-icon>
                     </span>
                     {{su.name}} {{su.description}}
                 </mat-panel-title>
@@ -15,6 +15,7 @@
                     {{su.url}}
                 </mat-panel-description>
             </mat-expansion-panel-header>
+            {{appSupportUrl.appHost}}{{su.url}}
             <div *ngIf="su.headers" class="mt-2">
                 <mat-card-subtitle>Headers</mat-card-subtitle>
                 <mat-form-field *ngFor="let h of su.headers | keyvalue;trackBy:trackByFn" class="mt-2 full-width">
@@ -23,7 +24,7 @@
                 </mat-form-field>
             </div>
             <div>
-                <button (click)="onInvoke(su)" class="search-button mt-3" mat-stroked-button
+                <button (click)="onInvoke(su, appSupportUrl.appHost)" class="search-button mt-3" mat-stroked-button
                     color="primary">Invoke</button>
             </div>
         </mat-expansion-panel>
@@ -33,7 +34,7 @@
 
 <mat-card *ngIf="result" class="mt-2">
     <div>
-        <mat-card-subtitle>{{currentUrl}}</mat-card-subtitle>
+        <mat-card-subtitle>{{appSupportUrl.appHost}}{{currentUrl}}</mat-card-subtitle>
         <pre>{{result | json}}</pre>
     </div>
 </mat-card>

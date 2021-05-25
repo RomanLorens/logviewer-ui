@@ -2,7 +2,7 @@ import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { CommonService } from '../services/common.service';
-import { TailLog } from '../tail-logs/tail-log';
+import { StatsRequest } from '../model/stats-request';
 
 export class ErrorDataSource implements DataSource<any> {
 
@@ -20,7 +20,7 @@ export class ErrorDataSource implements DataSource<any> {
         this.dataSubject.complete()
     }
 
-    fetch(log: TailLog) {
+    fetch(log: StatsRequest) {
         this.service.errors(log).pipe(
             catchError((err) => {
                 console.error(err)
@@ -29,7 +29,7 @@ export class ErrorDataSource implements DataSource<any> {
             finalize(() => { })
         ).subscribe(d => {
             this.dataSubject.next(d['errors'])
-            this.totalSubject.next(d['pagination'].total)
+            this.totalSubject.next(d['pagination']?.total)
         })
     }
 

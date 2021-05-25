@@ -1,0 +1,23 @@
+.support-url {
+    margin-bottom: 10px;
+    border-bottom: 1px solid lightgrey;
+    padding-bottom: 5px;
+}
+
+.float-right {
+    float: right;
+  }
+  
+.icon {
+    cursor: pointer;
+}
+
+.icons {
+    position: absolute;
+    right: 0;
+    bottom: 5px;
+}
+
+.relative {
+    position: relative;
+}

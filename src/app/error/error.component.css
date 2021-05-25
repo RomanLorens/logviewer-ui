@@ -15,3 +15,7 @@ table {
 .pointer {
     cursor: pointer;
 }
+
+.message-td {
+    line-break: anywhere;
+}

@@ -1,0 +1,112 @@
+<mat-horizontal-stepper #stepper>
+    <mat-step label="Application">
+        <mat-form-field class="full-width">
+            <mat-label>Application</mat-label>
+            <input matInput [(ngModel)]="app.application" name="application">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>Environment</mat-label>
+            <input matInput [(ngModel)]="app.env" name="env">
+        </mat-form-field>
+    </mat-step>
+
+    <mat-step label="Host Details">
+        <div *ngFor="let host of app.hosts; let i = index" class="host">
+            <div>
+                <span class="text-blue font-weight-bold">Host</span>
+                <mat-icon (click)="deleteHost(i)" class="float-right icon" matTooltip="Delete Host"
+                matTooltipClass="tooltip-red" matTooltipPosition="right">delete</mat-icon>
+                <mat-icon (click)="addHost()" class="icon float-right" matTooltip="Add Host">add</mat-icon>
+            </div>
+            <mat-form-field class="full-width">
+                <mat-label>Application Host</mat-label>
+                <input matInput [(ngModel)]="host.appHost" name="appHost">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Logviewer Endpoint</mat-label>
+                <input matInput [(ngModel)]="host.endpoint" name="endpoint">
+            </mat-form-field>
+            <ng-container *ngFor="let path of host.paths; let j = index; trackBy:trackByFn" class="mt-2">
+                <mat-form-field class="full-width">
+                    <mat-label>Log Path</mat-label>
+                    <input matInput [(ngModel)]="host.paths[j]" name="path">
+                    <div class="delete-path">
+                        <mat-icon (click)="deletePath(i, j)" class="float-right icon" matTooltip="Delete Log Path"
+                            matTooltipClass="tooltip-red" matTooltipPosition="right">delete</mat-icon>
+                    </div>
+                </mat-form-field>
+            </ng-container>
+            <mat-icon (click)="addPath(i)" class="icon" matTooltip="Add Path">add</mat-icon>
+        </div>
+    </mat-step>
+
+    <mat-step label="Log Structure">
+        <mat-form-field class="full-width">
+            <mat-label>Date Index</mat-label>
+            <input matInput [(ngModel)]="app['logStructure']['date']" name="date">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>User Index</mat-label>
+            <input matInput [(ngModel)]="app['logStructure']['user']" name="user">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>Request Index</mat-label>
+            <input matInput [(ngModel)]="app['logStructure']['reqid']" name="reqid">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>Level Index</mat-label>
+            <input matInput [(ngModel)]="app['logStructure']['level']" name="level">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>Message Index</mat-label>
+            <input matInput [(ngModel)]="app['logStructure']['message']" name="message">
+        </mat-form-field>
+    </mat-step>
+
+    <mat-step label="Support Urls">
+        <div *ngFor="let su of app.supportUrls; let i = index">
+            <div>
+                <span class="text-blue font-weight-bold">Support URL - {{su.name}}</span>
+                <mat-icon (click)="deleteSupportUrl(i)" class="float-right icon" matTooltip="Delete URL"
+                matTooltipClass="tooltip-red" matTooltipPosition="right">delete</mat-icon>
+                <mat-icon (click)="addSupportUrl()" class="icon float-right" matTooltip="Add URL">add</mat-icon>
+            </div>
+            <mat-form-field class="full-width">
+                <mat-label>Name</mat-label>
+                <input matInput [(ngModel)]="su.name" name="name">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Description</mat-label>
+                <input matInput [(ngModel)]="su.description" name="description">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Method</mat-label>
+                <input matInput [(ngModel)]="su.method" name="method">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Url</mat-label>
+                <input matInput [(ngModel)]="su.url" name="url">
+            </mat-form-field>
+            <ng-container *ngFor="let h of su._headers; trackBy:trackByFn; let j = index"> 
+                <mat-form-field class="full-width">
+                    <mat-label>Header Name</mat-label>
+                    <input matInput [(ngModel)]="su._headers[j].key" name="header-name">
+                    <div class="delete-path">
+                        <mat-icon (click)="deleteHeader(i, j)" class="float-right icon" matTooltip="Delete Header"
+                            matTooltipClass="tooltip-red" matTooltipPosition="right">delete</mat-icon>
+                    </div>
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <mat-label>Header Value</mat-label>
+                    <input matInput [(ngModel)]="su._headers[j].value" name="header-value">
+                </mat-form-field>
+            </ng-container>
+            <mat-icon (click)="addHeader(i)" class="icon" matTooltip="Add Header">add</mat-icon>
+        </div>
+    </mat-step>
+
+</mat-horizontal-stepper>
+
+<div mat-dialog-actions>
+    <button (click)="onUpdate()" class="ml-3 mb-3" mat-raised-button color="primary" mat-dialog>Update</button>
+</div>

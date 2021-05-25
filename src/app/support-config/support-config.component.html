@@ -1,0 +1,54 @@
+<app-log-config (hostsUpdated)="onHostsUpdated($event)">
+</app-log-config>
+
+<mat-card *ngIf="app" class="mt-2">
+    <mat-card-content>
+        <div class="relative">
+            <h4>Host Details</h4>
+            <div class="icons">
+                <mat-icon (click)="showUpdateDialog()" matTooltip="Update Config" class="icon float-right">edit</mat-icon>
+                <mat-icon (click)="showUpdateDialog(false)" matTooltip="Add New Config" class="icon float-right">add</mat-icon>
+            </div>
+        </div>
+        <div *ngFor="let h  of app.hosts">
+            <div class="row">
+                <div class="col-md-2 font-weight-bold">Application URL</div>
+                <div class="col-md-10">{{h.appHost}}</div>
+            </div>
+            <div class="row mt-1">
+                <div class="col-md-2 font-weight-bold">Logviewer URL</div>
+                <div class="col-md-10">{{h.endpoint}}</div>
+            </div>
+            <div *ngFor="let path of h.paths" class="row mt-1">
+                <div class="col-md-2 font-weight-bold">Log Path</div>
+                <div class="col-md-10">{{path}}</div>
+            </div>
+        </div>
+        <div class="mt-3">
+            <h4>Log Structure</h4>
+            <div *ngFor="let ls of app.logStructure | keyvalue" class="row">
+                <div class="col-md-2 font-weight-bold">{{ls.key}}</div>
+                <div class="col-md-10">{{ls.value}}</div>
+            </div>
+        </div>
+        <div class="mt-3">
+            <h4>Support URLs</h4>
+            <div *ngFor="let su of app.supportUrls" class="support-url">
+                <div class="row">
+                    <div class="col-md-2 font-weight-bold">Name</div>
+                    <div class="col-md-10">{{su.name}} - {{su.description}}</div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-md-2 font-weight-bold">URL</div>
+                    <div class="col-md-10">[{{su.method}}] {{su.url}}</div>
+                </div>
+                <div *ngIf="su.headers">
+                    <div *ngFor="let h of su.headers | keyvalue" class="row mt-1">
+                        <div class="col-md-2 font-weight-bold">{{h.key}}</div>
+                        <div class="col-md-10">{{h.value}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

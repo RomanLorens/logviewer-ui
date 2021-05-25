@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { TailLog } from '../tail-logs/tail-log';
-import { SupportUrl } from '../logs/SupportUrl';
+import { ApplicationLogRequest } from '../model/application-log-request';
+import { SupportUrl } from '../model/SupportUrl';
 import { CommonService } from '../services/common.service';
+import { AppSupportUrl } from '../model/app-support-url';
 
 @Component({
   selector: 'app-support-url',
@@ -10,9 +11,10 @@ import { CommonService } from '../services/common.service';
 })
 export class SupportUrlComponent implements OnInit {
 
-  app: TailLog
+  app: ApplicationLogRequest
   result
   currentUrl: string
+  appSupportUrl: AppSupportUrl
 
   constructor(private commonService: CommonService) { }
 
@@ -25,16 +27,20 @@ export class SupportUrlComponent implements OnInit {
     })
   }
 
-  onApplication(app: TailLog) {
+  onApplication(app: ApplicationLogRequest) {
     this.result = null
     this.app = app
     this.stopPropagation()
   }
 
-  onInvoke(su: SupportUrl) {
+  onSupportURLs(urls: AppSupportUrl) {
+    this.appSupportUrl = urls
+  }
+
+  onInvoke(su: SupportUrl, appHost: string) {
     this.result = null
     this.currentUrl = su.url
-    this.commonService.invokeSupportUrl(su).subscribe(d => this.result = d)
+    this.commonService.invokeSupportUrl(appHost, su).subscribe(d => this.result = d)
   }
 
   trackByFn(index: any, item: any) {

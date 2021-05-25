@@ -1,8 +1,9 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { Application } from 'src/app/logs/Application';
+import { Application } from 'src/app/model/application';
 import { CommonService } from 'src/app/services/common.service';
-import { TailLog } from 'src/app/tail-logs/tail-log';
-import { ApplicationSearch } from 'src/app/logs/application-search';
+import { ApplicationLogRequest } from 'src/app/model/application-log-request';
+import { SupportUrl } from 'src/app/model/SupportUrl';
+import { AppSupportUrl } from 'src/app/model/app-support-url';
 
 @Component({
   selector: 'app-full-config',
@@ -16,7 +17,8 @@ export class FullConfigComponent implements OnInit {
   log: string;
   paths: string[];
 
-  @Output() application = new EventEmitter<TailLog>();
+  @Output() application = new EventEmitter<ApplicationLogRequest>();
+  @Output() supportURLs = new EventEmitter<AppSupportUrl>()
 
   @Input() withOlderLogs = false
   @Input() hideLog = false
@@ -31,13 +33,13 @@ export class FullConfigComponent implements OnInit {
     this.host = app.hosts[0].endpoint
     this.paths = app.hosts[0].paths
     this.log = this.paths[0]
-    const t = new TailLog()
-    t.application = app.application
-    t.env = app.env
-    t.host = app.hosts[0].endpoint
+    const t = {} as ApplicationLogRequest
+    t.endpoint = app.hosts[0].endpoint
     t.log = app.hosts[0].paths[0]
-    t.supportUrls = app.supportUrls
+    //TODO what if more than one hosts
+    t.logStructure = app.logStructure
     this.application.emit(t)
+    this.supportURLs.emit({ supportUrls: app.supportUrls, appHost: app.hosts[0].appHost } as AppSupportUrl)
   }
 
   basename(u: string): string {
@@ -45,19 +47,15 @@ export class FullConfigComponent implements OnInit {
   }
 
   onLogSelected(log: string) {
-    const t = new TailLog()
-    t.application = this.app.application
-    t.env = this.app.env
-    t.host = this.app.hosts[0].endpoint
+    const t = {} as ApplicationLogRequest
+    t.endpoint = this.app.hosts[0].endpoint
     t.log = log
     this.application.emit(t)
   }
 
   loadOlderLogs() {
-    const search = new ApplicationSearch();
-    search.hosts = this.app.hosts.map(h => h.endpoint);
-    search.logs = [].concat(...this.app.hosts.map(h => h.paths));
-    this.commonService.listLogs(search).subscribe(d => {
+    //todo hosts 0 ???
+    this.commonService.listLogs(this.app.hosts[0]).subscribe(d => {
       this.paths = d.map(l => l.name);
     });
   }

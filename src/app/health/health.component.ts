@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WebsocketService } from '../services/websocket.service';
 import { CommonService } from '../services/common.service';
-import { Application } from '../logs/Application';
+import { Application } from '../model/application';
 import { Host } from './host';
 
 @Component({
@@ -22,11 +22,14 @@ export class HealthComponent implements OnInit {
     this.commonService.getConfig().subscribe((apps: Application[]) => {
       this.hosts = [];
       apps.forEach(app => {
-        app.hosts.forEach(h => {
-          if (h.health) {
-            this.hosts.push({ App: app.application, Host: h.health, Env: app.env, Status: -1 });
-          }
-        });
+        let health = app.supportUrls.find(s => s.name === 'health')
+        if (health) {
+          app.hosts.forEach(h => {
+              let url = h.appHost
+              url += health.url
+              this.hosts.push({ App: app.application, Host: url, Env: app.env, Status: -1 });
+          });
+        }
       });
 
       this.ws.appsHealth().subscribe((d: Host) => {

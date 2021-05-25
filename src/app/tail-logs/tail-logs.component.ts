@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Application } from '../logs/Application';
-import { TailLog } from './tail-log';
+import { Application } from '../model/application';
+import { ApplicationLogRequest } from '../model/application-log-request';
 import { CommonService } from '../services/common.service';
 import { SearchResult } from '../logs/search-result';
 import { WebsocketService } from '../services/websocket.service';
 import { Subject } from 'rxjs';
+import { LogRequest } from '../model/log-request';
 
 @Component({
   selector: 'app-tail-logs',
@@ -48,11 +49,9 @@ export class TailLogsComponent implements OnInit {
   }
 
   tailLog() {
-    const t = new TailLog();
-    t.application = this.app.application;
-    t.env = this.app.env;
-    t.host = this.host;
-    t.log = this.path;
+    //todo
+    const host = this.app.hosts[0]
+    const t = {endpoint: host.endpoint,log: this.path} as LogRequest;
     this.loading = true;
     this.results = null;
 

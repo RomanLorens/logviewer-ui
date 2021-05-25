@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -19,8 +19,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
-
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatTabsModule } from '@angular/material/tabs'
+import { MatDatepickerModule } from '@angular/material/datepicker'
+import { ChartsModule } from 'ng2-charts'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LogsComponent } from './logs/logs.component';
@@ -38,6 +40,11 @@ import { FullConfigComponent } from './partial/full-config/full-config.component
 import { RequestTesterComponent } from './request-tester/request-tester.component';
 import { SupportUrlComponent } from './support-url/support-url.component';
 import { UserInfoComponent } from './partial/user-info/user-info.component';
+import { SupportConfigComponent } from './support-config/support-config.component';
+import { SupportConfigSaveComponent } from './support-config/support-config-save/support-config-save.component';
+import { UnsubscribeComponent } from './partial/unsubscribe.component';
+import { MatNativeDateModule } from '@angular/material/core';
+import { ChartComponent } from './partial/chart/chart.component'
 
 @NgModule({
   declarations: [
@@ -55,7 +62,11 @@ import { UserInfoComponent } from './partial/user-info/user-info.component';
     FullConfigComponent,
     RequestTesterComponent,
     SupportUrlComponent,
-    UserInfoComponent
+    UserInfoComponent,
+    SupportConfigComponent,
+    SupportConfigSaveComponent,
+    UnsubscribeComponent,
+    ChartComponent
   ],
   imports: [
     BrowserModule,
@@ -63,6 +74,8 @@ import { UserInfoComponent } from './partial/user-info/user-info.component';
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
+    ChartsModule,
 
     MatPaginatorModule,
     MatSortModule,
@@ -79,7 +92,11 @@ import { UserInfoComponent } from './partial/user-info/user-info.component';
     MatChipsModule,
     MatSnackBarModule,
     MatCheckboxModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatStepperModule,
+    MatTabsModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent]

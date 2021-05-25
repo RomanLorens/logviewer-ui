@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../services/common.service';
 import { Log } from './log'
-import { ApplicationSearch } from '../logs/application-search';
 import * as fileSaver from 'file-saver';
+import { Application } from '../model/application';
+import { asEndpoint } from '../model/app-host'
 
 @Component({
   selector: 'app-list-logs',
@@ -13,7 +14,7 @@ export class ListLogsComponent implements OnInit {
 
   logs: Log[];
   loading = false;
-  search: ApplicationSearch;
+  app: Application
 
   displayedColumns: string[] = ['name', 'modtime', 'size'];
 
@@ -22,21 +23,22 @@ export class ListLogsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.search = new ApplicationSearch();
   }
 
-  download(log: string, host: string): void {
-    this.commonService.downloadLog(log, host).subscribe((res: Blob) => fileSaver.saveAs(res, this.basename(log)));
+  download(log: string): void {
+    //todo
+    const endpoint = this.app.hosts[0].endpoint
+    this.commonService.downloadLog(log, endpoint).subscribe((res: Blob) => fileSaver.saveAs(res, this.basename(log)));
   }
 
-  onHostsUpdated(host) {
-    this.search.hosts = host.hosts.map(h => h.endpoint);
-    this.search.logs = host.hosts[0].paths;
+  onHostsUpdated(app: Application) {
+    this.app = app
   }
 
   getLogs() {
     this.loading = true;
-    this.commonService.listLogs(this.search).subscribe((d: Log[]) => {
+    //todo
+    this.commonService.listLogs(asEndpoint(this.app.hosts[0])).subscribe((d: Log[]) => {
       this.logs = d;
       this.loading = false;
     });

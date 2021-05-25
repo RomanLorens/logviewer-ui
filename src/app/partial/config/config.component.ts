@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UnsubscribeComponent } from '../unsubscribe.component';
 import { CommonService } from 'src/app/services/common.service';
-import { Application } from 'src/app/logs/Application';
+import { Application } from 'src/app/model/application';
 
 @Component({
   selector: 'app-log-config',

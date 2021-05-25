@@ -23,39 +23,95 @@
 </app-log-config>
 
 
-<table *ngIf="dataSource" mat-table [dataSource]="dataSource" class="mat-elevation-z8 results mt-3">
-    <ng-container matColumnDef="position">
-        <th mat-header-cell *matHeaderCellDef> # </th>
-        <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
-    </ng-container>
+<mat-card [hidden]="!dataSource" class="mt-3">
+    <div *ngIf="currentTab" [formGroup]="dateForm" class="date-form">
+        <mat-form-field class="form-select">
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [rangePicker]="picker" formGroupName="dateRange">
+                <input matStartDate formControlName="startDate" placeholder="Start date">
+                <input (dateChange)="onDateChanged($event)" matEndDate formControlName="endDate" placeholder="End date">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+    </div>
+    <mat-tab-group (selectedIndexChange)="onTabChanged()" dynamicHeight class="mt-3" #tabs>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon>table_chart</mat-icon>
+            </ng-template>
 
-    <ng-container matColumnDef="user">
-        <th mat-header-cell *matHeaderCellDef> User </th>
-        <td mat-cell *matCellDef="let element"> <app-user-info [user]="element.user"></app-user-info>  {{element.user}} </td>
-    </ng-container>
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 results">
+                <ng-container matColumnDef="position">
+                    <th mat-header-cell *matHeaderCellDef> # </th>
+                    <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
+                </ng-container>
 
-    <ng-container matColumnDef="lastAccess">
-        <th mat-header-cell *matHeaderCellDef> Last Access </th>
-        <td mat-cell *matCellDef="let element"> {{element.lastTime}} </td>
-    </ng-container>
+                <ng-container matColumnDef="user">
+                    <th mat-header-cell *matHeaderCellDef> User </th>
+                    <td mat-cell *matCellDef="let element">
+                        <app-user-info [user]="element.user"></app-user-info> {{element.user}}
+                    </td>
+                </ng-container>
 
-    <ng-container matColumnDef="counter">
-        <th mat-header-cell *matHeaderCellDef> Stats </th>
-        <td mat-cell *matCellDef="let element">
-            <div>Total {{element.counter}} </div>
-            <div *ngFor="let l of element.levels | keyvalue">
-                <span class="relative"
-                    [ngClass]="{'text-danger': l.key === 'ERROR' , 'text-warning':l.key === 'WARNING' || l.key === 'WARN' }">{{l.key}}
-                    {{l.value}}
-                    <mat-icon *ngIf="l.key === 'ERROR'" (click)="showErrors(element.errors)" class="ml-2 icon">info
-                    </mat-icon>
-                    <mat-icon *ngIf="l.key === 'WARNING' || l.key === 'WARN'" (click)="showErrors(element.warnings)" class="ml-2 icon">info
-                    </mat-icon>
-                </span>
-            </div>
-        </td>
-    </ng-container>
+                <ng-container matColumnDef="lastAccess">
+                    <th mat-header-cell *matHeaderCellDef> Last Access </th>
+                    <td mat-cell *matCellDef="let element"> {{element.lastTime}} </td>
+                </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+                <ng-container matColumnDef="counter">
+                    <th mat-header-cell *matHeaderCellDef> Stats </th>
+                    <td mat-cell *matCellDef="let element">
+                        <div>Total {{element.counter}} </div>
+                        <div *ngFor="let l of element.levels | keyvalue">
+                            <span class="relative"
+                                [ngClass]="{'text-danger': l.key === 'ERROR' , 'text-warning':l.key === 'WARNING' || l.key === 'WARN' }">{{l.key}}
+                                {{l.value}}
+                                <mat-icon *ngIf="l.key === 'ERROR'" (click)="showErrors(element.errors)"
+                                    class="ml-2 icon">
+                                    info
+                                </mat-icon>
+                                <mat-icon *ngIf="l.key === 'WARNING' || l.key === 'WARN'"
+                                    (click)="showErrors(element.warnings)" class="ml-2 icon">info
+                                </mat-icon>
+                                <span class="date-info"
+                                    *ngIf="l.key === 'ERROR' || l.key.includes('WARN')">{{getFirstDate(l.key, element)}}</span>
+                            </span>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </mat-tab>
+
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon>insert_chart_outlined</mat-icon>
+                <span class="pl-2">Requests</span>
+            </ng-template>
+            <app-chart [labels]="labels" chartType="bar" [withPluginDataLabels]="true" [datasets]="chartDatasets">
+            </app-chart>
+        </mat-tab>
+
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon>insert_chart_outlined</mat-icon>
+                <span class="pl-2">Users Per Day</span>
+            </ng-template>
+            <app-chart [labels]="labels" chartType="bar" [withPluginDataLabels]="true" [datasets]="usersCountDatasets">
+            </app-chart>
+        </mat-tab>
+
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon>insert_chart_outlined</mat-icon>
+                <span class="pl-2">Users</span>
+            </ng-template>
+            <app-chart [labels]="usersTimeRangeLabels" chartType="bar" [withPluginDataLabels]="true" [datasets]="usersTimeRangeDatasets">
+            </app-chart>
+        </mat-tab>
+
+    </mat-tab-group>
+</mat-card>

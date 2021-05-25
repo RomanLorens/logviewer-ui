@@ -9,6 +9,7 @@ import { ErrorComponent } from './error/error.component';
 import { RequestTesterComponent } from './request-tester/request-tester.component';
 import { SupportUrlComponent } from './support-url/support-url.component';
 import { AuthGuard } from './auth/auth.guard';
+import { SupportConfigComponent } from './support-config/support-config.component';
 
 const routes: Routes = [
   { path: 'logs', component: LogsComponent },
@@ -22,6 +23,11 @@ const routes: Routes = [
   { 
     path: 'support-urls', 
     component: SupportUrlComponent,
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: 'support-config', 
+    component: SupportConfigComponent,
     canActivate: [AuthGuard]
   },
   { path: '', pathMatch: 'full', redirectTo: 'logs' },

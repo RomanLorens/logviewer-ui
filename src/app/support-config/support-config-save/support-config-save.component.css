@@ -1,0 +1,32 @@
+.full-width {
+    width: 100%;
+}
+.mat-stepper-horizontal {
+    margin-top: 8px;
+  }
+  
+.mat-form-field {
+        margin-top: 16px;
+  }
+
+:host ::ng-deep .mat-step-header {
+    background-color: transparent;
+}
+
+.float-right {
+  float: right;
+}
+
+.icon {
+  cursor: pointer;
+}
+
+.tooltip-red {
+  background: #b71c1c;
+}
+
+.delete-path {
+  position: absolute;
+  right: 0;
+  bottom: 3px;
+}
